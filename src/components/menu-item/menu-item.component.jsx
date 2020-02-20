@@ -1,4 +1,7 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom'; // withrouter is is it's a higher order component and a higher order component is essentially
+// a function that takes a component as an argument and which turns you a modified component.
+
 import './menu-item.styles.scss';
 
 // use functional component here instead of classed based
@@ -27,8 +30,11 @@ import './menu-item.styles.scss';
 
 
 
-const MenuItem = ({ title, imageUrl, size }) => (
-  <div className={`${size} menu-item`}>
+const MenuItem = ({ title, imageUrl, size, history, linkUrl, match }) => (
+  <div 
+  className={`${size} menu-item`}
+  onClick={() => history.push(`${match.url}${linkUrl}`)}
+  >
     <div    /// // this div => We just want to see the effect get bigger with in our div when we hover over it.
       className='background-image'
       style={{
@@ -42,4 +48,7 @@ const MenuItem = ({ title, imageUrl, size }) => (
   </div>
 );
 
-export default MenuItem;
+// component is a function that takes any component and modifies it in some way and then returns you that
+// new modified component.
+
+export default withRouter(MenuItem);
