@@ -1,12 +1,13 @@
 import React from 'react';
 import { Switch, Route } from 'react-router-dom';
 
+import './App.css';
+
 import HomePage from './pages/homepage/homepage.component';
 import ShopPage from './pages/shop/shop.component';
 import SignInAndSignUpPage from './pages/sign-in-and-sign-up/sign-in-and-sign-up.component';
 import Header from './components/header/header.component'
-import {auth} from './firebase/firebase.utils';
-import './App.css';
+import {auth, createUserProfileDocument} from './firebase/firebase.utils';
 
 
 
@@ -19,22 +20,34 @@ class App extends React.Component {
     };
   }
 
-  // callback inside we're going to call this.setstate where we're
-// setting current user to that user object so let's log it out as well.
-// Just to see what it looks like now when we go back to our application and we open up our console we
-// actually see that this is our user the one that we just signed in with with Google.
-    componentDidMount (){
-      auth.onAuthStateChanged(user =>{
-        this.setState ({currentUser: user});   
-        console.log(user);
+  unsubscribeFromAuth =null;
 
-    })
-  }
+componentDidMount() {
+  this.unsubscribeFromAuth = auth.onAuthStateChanged(async userAuth => {
+    if (userAuth) {
+      const userRef = await createUserProfileDocument(userAuth);
+
+      userRef.onSnapshot(snapShot => {
+        this.setState({
+          currentUser: {
+            id: snapShot.id,
+            ...snapShot.data()
+          }
+        });
+
+        console.log(this.state);
+      });
+    }
+
+    this.setState({ currentUser: userAuth});
+  });
+}
 
   componentWillUnmount() {
     this.unsubscribeFromAuth();
   }
 
+  
 
   // So right now if we look at the final application we actually see that there's a sign up button in the
 // header when a user is signed in so let's implement that the first thing we have to do is make sure that
