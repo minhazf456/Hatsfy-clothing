@@ -3,6 +3,8 @@ import {Link} from 'react-router-dom';
 import {connect} from 'react-redux';
 
 import { auth } from '../../firebase/firebase.utils';
+import CartIcon from '../cart-icon/cart-icon.component';
+import CartDropdown from '../cart-dropdown/cart-dropdown.component';
 
 import { ReactComponent as Logo } from '../../assests/crown.svg';
 
@@ -14,7 +16,7 @@ import './header.styles.scss';
 // it will evaluate to true therefore it will render a div if it is false such as if it was a null null
 // evaluates to false and then it will render the link.
 
-const Header = ({ currentUser }) => (
+const Header = ({ currentUser, hidden }) => (
   <div className='header'>
     <Link className='logo-container' to='/'>
       <Logo className='logo' />
@@ -35,15 +37,15 @@ const Header = ({ currentUser }) => (
           SIGN IN
         </Link>
       )}
+      <CartIcon />
     </div>
+    {hidden ? null : <CartDropdown />}
   </div>
 );
 
-// const mapStateToProps = state => ({
-//   currentUser: state.user.currentUser
-// })
+const mapStateToProps = ({ user: { currentUser }, cart: { hidden } }) => ({
+  currentUser,
+  hidden
+});
 
-const mapStateToProps = state => ({
-  currentUser: state.user.currentUser
-})
-export default connect (mapStateToProps)(Header);
+export default connect(mapStateToProps)(Header);
