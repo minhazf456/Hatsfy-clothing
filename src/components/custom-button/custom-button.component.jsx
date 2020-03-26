@@ -8,9 +8,11 @@ import './custom-button.styles.scss';
 // And using this we will now render this class of Google sign and if this property is true if not then
 // there will be an empty string and custom button is also always rendered.
 
-const CustomButton = ({ children, isGoogleSignIn, ...otherProps }) => (
+const CustomButton = ({ children, isGoogleSignIn,inverted, ...otherProps }) => (
   <button
-  className={`${isGoogleSignIn ? 'google-sign-in' : ''} custom-button`}
+  className={`${inverted ? 'inverted' : ''} ${
+    isGoogleSignIn ? 'google-sign-in' : ''
+  } custom-button`}
   {...otherProps}
 >
   {children}
