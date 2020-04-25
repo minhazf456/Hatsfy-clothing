@@ -1,90 +1,25 @@
 import React from 'react';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import { selectDirectorySections } from '../../redux/directory/directory.selectors';
+
 import MenuItem from '../menu-item/menu-item.component';
+
+
 
 import './directory.styles.scss';
 
+const Directory = ({ sections }) => (
+  <div className='directory-menu'>
+    {sections.map(({ id, ...otherSectionProps }) => (
+      <MenuItem key={id} {...otherSectionProps} />
+    ))}
+  </div>
+);
 
-// this one will need to be class component  because
-// we need to store the state value of those manu items
-//that we want to pass and create our manu items with.
+const mapStateToProps = createStructuredSelector({
+  sections: selectDirectorySections
+});
 
-
-//This one is going to have a directory with a state value of those menu items.
-
-class Directory extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      sections: [
-        {
-          title: 'hats',
-          imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
-          id: 1,
-          linkUrl: 'hats'
-        },
-        {
-          title: 'jackets',
-          imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
-          id: 2,
-          linkUrl: ''
-        },
-        {
-          title: 'sneakers',
-          imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
-          id: 3,
-          linkUrl: ''
-        },
-        {
-          title: 'womens',
-          imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
-          size: 'large',
-          id: 4,
-          linkUrl: ''
-        },
-        {
-          title: 'mens',
-          imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
-          size: 'large',
-          id: 5,
-          linkUrl: ''
-        }
-      ]
-    };
-  }
-
-//  so inside of our render we want to return what we had in our home page.
-// let's go back to our homepage and let's copy this directory menu because that's all we really need
-
-// now wa map through our sections. we want to pass these section
-// objects into our manu item. so that you can create manu item
-
-// and now we know that we have to pass in a function to our map call.
-// in our map call of our array we're gonna get a section and what we want to render is the menu item
-
-// render() {
-//     return (
-//       <div className='directory-menu'>
-//         {this.state.sections.map(({ title, imageUrl, id, size, linkUrl}) => (
-//           <MenuItem key={id} title={title} imageUrl={imageUrl} size={size} linkUrl={linkUrl} />
-//         ))}
-//       </div>
-//     );
-//   }
-// }
-
-// insted of writing above render method we can shorten to this format according ES6
-
-render() {
-  return (
-    <div className='directory-menu'>
-      {this.state.sections.map(({ id, ...otherSectionProps }) => (
-        <MenuItem key={id} {...otherSectionProps} />
-      ))}
-    </div>
-  );
-}
-}
-
-
-export default Directory;
+export default connect(mapStateToProps)(Directory);
