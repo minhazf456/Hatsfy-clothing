@@ -1,15 +1,12 @@
 import React from 'react';
 
-import Directory from '../../components/directory/directory.component';  // we got to go into our home page and replace our
-// old code with our new components so let's go and import in our directory
+import Directory from '../../components/directory/directory.component';  
 
-import './homepage.styles.scss';
-
+import { HomePageContainer } from './homepage.styles';
 const HomePage = () => (
-  // console.log(props),
-  <div className='homepage'>
+  <HomePageContainer>
     <Directory />
-  </div>
+  </HomePageContainer>
 );
 
 export default HomePage;
